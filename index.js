@@ -3,8 +3,6 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const collection = require("./models/userModel");
-const { mongo } = require("mongoose");
-const mongo = require(mongo);
 
 const app = express();
 

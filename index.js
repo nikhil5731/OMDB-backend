@@ -12,7 +12,6 @@ app.use(cors());
 //SignUp
 app.post("/signup", async (req, res) => {
   try {
-    console.log(req.body);
     const { username, email } = req.body;
     const userCheck = await collection.findOne({ username: username });
     const emailCheck = await collection.findOne({ email: email });

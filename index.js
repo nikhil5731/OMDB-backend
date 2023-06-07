@@ -10,11 +10,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //SignUp
-app.post("/signup", async (req, res) => {
+app.post("/signup", (req, res) => {
   try {
     const { username, email } = req.body;
-    const userCheck = await collection.findOne({ username: username });
-    const emailCheck = await collection.findOne({ email: email });
+    const userCheck = collection.findOne({ username: username });
+    const emailCheck = collection.findOne({ email: email });
     if (userCheck) {
       return res.json({ msg: "Username already exists." });
     } else if (emailCheck) {

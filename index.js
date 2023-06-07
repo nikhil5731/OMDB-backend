@@ -10,11 +10,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //SignUp
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
+    console.log(req.body);
     const { username, email } = req.body;
-    const userCheck = collection.findOne({ username: username });
-    const emailCheck = collection.findOne({ email: email });
+    const userCheck = await collection.findOne({ username: username });
+    const emailCheck = await collection.findOne({ email: email });
+    // console.log();
     if (userCheck) {
       return res.json({ msg: "Username already exists." });
     } else if (emailCheck) {
@@ -22,10 +24,10 @@ app.post("/signup", (req, res) => {
     } else {
       collection.insertMany(req.body);
       //   console.log(req.body);
-      res.json({ msg: "Registered successfully." });
+      return res.json({ msg: "Registered successfully." });
     }
   } catch (error) {
-    res.json({ msg: "error" });
+    return res.json({ msg: "error" });
   }
 });
 
@@ -39,10 +41,10 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(
           {
             username: usernameCheck.username,
-            email:usernameCheck.email,
+            email: usernameCheck.email,
           },
           "JWT_SECRET",
-          {expiresIn:"7days"}
+          { expiresIn: "7days" }
         );
         return res.json({ msg: "Login Successful.", token: token });
       } else {
@@ -52,7 +54,7 @@ app.post("/login", async (req, res) => {
       return res.json({ msg: "Username is not registered." });
     }
   } catch (error) {
-    res.json(error);
+    res.json({msg:"Catch error"});
   }
 });
 
@@ -60,10 +62,10 @@ app.post("/login", async (req, res) => {
 app.post("/", async (req, res) => {
   try {
     const decodeToken = jwt.decode(req.body.token);
-    if(decodeToken){
+    if (decodeToken) {
       return res.json(decodeToken);
-    } else{
-      return res.json({msg:'not loggedin'});
+    } else {
+      return res.json({ msg: "not loggedin" });
     }
   } catch (error) {
     res.json(error);
